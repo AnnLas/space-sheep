@@ -14,10 +14,12 @@ public class SpaceShip extends Observable {
     // updated per one second
     private double currentFuelUsage = 0;
     // maximum speed of burning rate
-    public static final double MAXIMUM_FUEL_USAGE = 16500;
+    public static final double MAXIMUM_FUEL_USAGE = - 16500;
     // single change of fuel usage
     public static final double CHANGE_OF_FUEL_UASGE = 500;
-
+    // amount of fuel
+    public static final double SHIP_MASS = 1000000;
+    private boolean isEmptyFuelTank = false;
     private ExecutorService executorService;
 
     public SpaceShip() {
@@ -35,7 +37,9 @@ public class SpaceShip extends Observable {
      * @param currentFuelUsage if param is higher than 0
      */
     public void setCurrentFuelUsage(double currentFuelUsage) {
+        if (!isEmptyFuelTank)
         this.currentFuelUsage = currentFuelUsage;
+        else currentFuelUsage = 0;
         try {
             updateCurrentParameters(currentFuelUsage);
         } catch (InterruptedException e) {
@@ -48,14 +52,14 @@ public class SpaceShip extends Observable {
         movement.setFuelUsage(currentU);
 
         executorService.submit(movement);
-
-            // wait interval of 100 ms. In this period thread should be terminated
-            executorService.awaitTermination(100, TimeUnit.MILLISECONDS);
+        // wait interval of 100 ms. In this period thread should be terminated.
+        // SHOULD BE CHANGED AS FAST AS POSSIBLE. ONLY FOR TESTS.
+        executorService.awaitTermination(100, TimeUnit.MILLISECONDS);
 
         heightStart = movement.getResultsHandler().getLastHeightValue();
         velocityStart = movement.getResultsHandler().getLastVelocityValue();
         massStart = movement.getResultsHandler().getLastMassValue();
-
+        if (massStart <= SHIP_MASS )  isEmptyFuelTank = true; //to be changed. Allows mass to be lower than ship mass
         parametersChanged();
     }
 

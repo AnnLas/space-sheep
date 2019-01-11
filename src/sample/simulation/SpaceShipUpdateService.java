@@ -6,7 +6,9 @@ import sample.Calculations.DataPackage;
 import sample.Calculations.SpaceShip;
 import sample.Controller;
 
-
+/**
+ * Updates SpaceShip parameters after a period of time
+ */
 public class SpaceShipUpdateService extends ScheduledService<DataPackage>{
 
     private volatile SpaceShip spaceShip;

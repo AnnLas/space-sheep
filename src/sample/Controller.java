@@ -53,7 +53,7 @@ public class Controller implements Initializable {
                 switch (keyEvent.getCode()) {
                     case UP: {
                         increaseSpeed = true;
-                        if (fuelUsage<SpaceShip.MAXIMUM_FUEL_USAGE) //maximum burnout rate
+                        if (fuelUsage>SpaceShip.MAXIMUM_FUEL_USAGE) //maximum burnout rate
                         fuelUsage-=SpaceShip.CHANGE_OF_FUEL_UASGE; //grams
                             System.out.println(fuelUsage);
                         break;

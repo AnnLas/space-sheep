@@ -6,19 +6,21 @@ import org.apache.commons.math3.ode.nonstiff.EulerIntegrator;
 
 import java.util.Arrays;
 
+/**
+ * Thread that calculates movement of a SpaceSheep Sprite in next second.
+ */
 public class Movement implements Runnable{
 
-    //data about movement in next period
-    private double simulationTime = 1;
-
+    //time to integrate
+    private final double SIMULATION_TIME = 1;
+    //step of integrate
     private double step = 0.01;
-    //vStart - initial speed of the spaceship [m/s]
-
+    //fuelUsage - parameter of burning rate
     private double fuelUsage = 0;
 
-    private ResultsHandler resultsHandler; //static to preserve last movement
-    private double[] xStart; //static to preserve next movement
-    private double[] xStop;  //static to preserve next movement
+    private ResultsHandler resultsHandler;
+    private double[] xStart;
+    private double[] xStop;
 
 
     public Movement(double[] xStart) {
@@ -26,12 +28,16 @@ public class Movement implements Runnable{
         this.xStop = xStart.clone();
     }
 
-
+    /**
+     * @return ResultHandler, containing all values of last integration
+     */
     public ResultsHandler getResultsHandler() {
         return resultsHandler;
     }
 
-
+    /**
+     * @param fuelUsage set Fuel Usage for integration
+     */
     public void setFuelUsage(double fuelUsage) {
         this.fuelUsage = fuelUsage;
     }
@@ -42,6 +48,6 @@ public class Movement implements Runnable{
         FirstOrderIntegrator integrator = new EulerIntegrator(step);
         resultsHandler = new ResultsHandler();
         integrator.addStepHandler(resultsHandler);
-        integrator.integrate(firstOrderDifferentialEquations, 0, xStart, simulationTime, xStop);
+        integrator.integrate(firstOrderDifferentialEquations, 0, xStart, SIMULATION_TIME, xStop);
     }
 }

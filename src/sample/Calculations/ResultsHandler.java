@@ -33,8 +33,11 @@ public class ResultsHandler implements StepHandler {
         hValues.add(x[0]);
         vValues.add(x[1]);
         mValues.add(x[2]);
-        System.out.println(t + " " + Arrays.toString(x));
-        if (isLast) lastValues = x;
+
+        if (isLast) {
+            lastValues = x;
+            System.out.println(t + " " + Arrays.toString(x));
+        }
     }
 
     public double getLastHeightValue(){
