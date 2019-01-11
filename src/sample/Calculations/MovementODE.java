@@ -12,7 +12,7 @@ public class MovementODE implements FirstOrderDifferentialEquations {
     //k - gas outlet velocity [m/s]
     private static final double k = 636;
     //burning rate
-    private double u;
+    private final double fuelUsage;
 
 
     @Override
@@ -20,17 +20,17 @@ public class MovementODE implements FirstOrderDifferentialEquations {
         return 3;
     }
 
-    public MovementODE(double u) {
-        this.u = u;
+    public MovementODE(double fuelUsage) {
+        this.fuelUsage = fuelUsage;
     }
 
     @Override
     public void computeDerivatives(double t, double[] x, double[] dxdt) throws MaxCountExceededException, DimensionMismatchException {
-        //dxdt[0] - height of the ship at the moment of time
+        //dxdt[0] - velocity of the ship at the moment of time
         dxdt[0] = x[1];
-        //dxdt[1] - speed of the ship at the moment of time
-        dxdt[1] = -g - k * u / x[2];
+        //dxdt[1] - acceleration of the ship at the moment of time
+        dxdt[1] = -g - k * fuelUsage / x[2];
         //dxdt[2] - weight of the ship at the moment (ship & fuel)
-        dxdt[2] = u;
+        dxdt[2] = fuelUsage;
     }
 }

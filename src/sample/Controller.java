@@ -6,48 +6,63 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 import sample.Calculations.SpaceShip;
+import sample.simulation.SpaceShipUpdateService;
 
 
 import java.net.URL;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable, Observer {
-    private boolean increaseSpeed, decreaseSpeed;
+public class Controller implements Initializable {
+    private boolean increaseSpeed;
+    private boolean decreaseSpeed;
     private SpaceShip spaceShip;
-    private double u;
+    // Usage of fuel per one second. Fuel usage can't be positive number.
+    private static double fuelUsage;
+
     @FXML
     private Pane game_pane;
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         spaceShip = new SpaceShip();
         changeSpeedInit();
         graphicsInit();
+        SpaceShipUpdateService spaceShipUpdateService = new SpaceShipUpdateService(spaceShip);
+        spaceShipUpdateService.setPeriod(Duration.seconds(1));
+        spaceShipUpdateService.setOnSucceeded(event -> System.out.println("Updated"));
+        spaceShipUpdateService.setOnFailed(event -> System.out.println("Failed"));
+        spaceShipUpdateService.start();
     }
 
-    @Override
-    public void update(Observable observable, Object o) {
-        spaceShip = (SpaceShip) observable;
 
-
+    /**
+     * @return fuelUsage in kilograms per second
+     */
+    public static double getFuelUsage() {
+        return fuelUsage;
     }
 
-    public void changeSpeedInit() {
+    /**
+     * Initialization of listeners on main game pane
+     */
+    private void changeSpeedInit() {
         game_pane.sceneProperty().addListener((observableValue, scene, t1) -> {
             game_pane.getScene().setOnKeyPressed(keyEvent -> {
                 switch (keyEvent.getCode()) {
                     case UP: {
                         increaseSpeed = true;
-                        u++;
-                        spaceShip.setCurrentU(u);
+                        if (fuelUsage<SpaceShip.MAXIMUM_FUEL_USAGE) //maximum burnout rate
+                        fuelUsage-=SpaceShip.CHANGE_OF_FUEL_UASGE; //grams
+                            System.out.println(fuelUsage);
                         break;
                     }
                     case DOWN:
                         decreaseSpeed = true;
+                        if (fuelUsage!=0) //fuel usage can't be positive
+                        fuelUsage+= SpaceShip.CHANGE_OF_FUEL_UASGE; //grams
+                            System.out.println(fuelUsage);
                         break;
                 }
 
@@ -68,7 +83,9 @@ public class Controller implements Initializable, Observer {
         });
 
     }
-    public void graphicsInit(){
+
+
+    private void graphicsInit(){
 
         Canvas canvas = new Canvas( 1000, 1000);
         game_pane.getChildren().add(canvas);
