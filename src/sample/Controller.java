@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -17,11 +18,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
-    private boolean increaseSpeed;
-    private boolean decreaseSpeed;
     private SpaceShip spaceShip;
     // Usage of fuel per one second. Fuel usage can't be positive number.
     private static double fuelUsage;
+    //scaler for animations
+    private static final double VELOCITY_SCALER = 1500;
 
     @FXML
     private Pane game_pane;
@@ -41,6 +42,7 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         spaceShip = new SpaceShip();
         changeSpeedInit();
+        graphicsInit();
         SpaceShipUpdateService spaceShipUpdateService = new SpaceShipUpdateService(spaceShip);
         spaceShipUpdateService.setPeriod(Duration.seconds(0.1));
         spaceShipUpdateService.setOnSucceeded(event -> System.out.println("Updated"));
@@ -66,14 +68,12 @@ public class Controller implements Initializable {
             game_pane.getScene().setOnKeyPressed(keyEvent -> {
                 switch (keyEvent.getCode()) {
                     case UP: {
-                        increaseSpeed = true;
                         if (fuelUsage>SpaceShip.MAXIMUM_FUEL_USAGE) //maximum burnout rate
                         fuelUsage-=SpaceShip.CHANGE_OF_FUEL_USAGE; //grams
                             System.out.println(fuelUsage);
                         break;
                     }
                     case DOWN:
-                        decreaseSpeed = true;
                         if (fuelUsage!=0) //fuel usage can't be positive
                         fuelUsage+= SpaceShip.CHANGE_OF_FUEL_USAGE; //grams
                             System.out.println(fuelUsage);
@@ -82,17 +82,6 @@ public class Controller implements Initializable {
 
             });
 
-            game_pane.getScene().setOnKeyReleased(keyEvent -> {
-                switch (keyEvent.getCode()) {
-                    case UP:
-                        increaseSpeed = false;
-                        break;
-                    case DOWN:
-                        decreaseSpeed = false;
-                        break;
-                }
-
-            });
 
         });
 
@@ -101,11 +90,33 @@ public class Controller implements Initializable {
 
     private void graphicsInit(){
 
-        Canvas canvas = new Canvas( 1000, 1000);
+        Canvas canvas = new Canvas( 1000, 500);
         game_pane.getChildren().add(canvas);
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.drawImage(new Image("sample/images/background.jpg"),0,0);
-        gc.stroke();
+
+        Sprite background = new BackgroundSprite(0,0,0,0);
+        Image image = new Image("sample/images/background.png");
+        background.setImage(image);
+        Sprite followingBackground = new BackgroundSprite(0,image.getHeight(),0,0);
+        followingBackground.setImage(image);
+        final long startNanoTime = System.nanoTime();
+
+        new AnimationTimer()
+        {
+            public void handle(long currentNanoTime)
+            {
+                double t = (currentNanoTime - startNanoTime) / 1000000000.0;
+                if (spaceShip.isHasLanded()) this.stop();
+                System.out.println(background.getPositionY());
+                // background image clears canvas
+                background.setVelocity(0,spaceShip.getVelocityStart()/VELOCITY_SCALER);
+                background.update(t);
+                background.render(gc);
+                followingBackground.setVelocity(0,spaceShip.getVelocityStart()/VELOCITY_SCALER);
+                followingBackground.update(t);
+                followingBackground.render(gc);
+            }
+        }.start();
 
     }
 

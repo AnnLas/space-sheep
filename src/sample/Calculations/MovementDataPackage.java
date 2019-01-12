@@ -20,6 +20,7 @@ public class MovementDataPackage implements Observer {
     private final String VELOCITY_DATA = "Velocity: ";
     private final String MASS_DATA = "Mass: ";
     private final String FUEL_USAGE_DATA = "Fuel usage: ";
+
     public MovementDataPackage(Label heightLabel, Label velocityLabel, Label massLabel, Label fuelUsageLabel) {
         this.heightLabel = heightLabel;
         this.velocityLabel = velocityLabel;

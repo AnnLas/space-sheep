@@ -21,6 +21,7 @@ public class SpaceShip extends Observable {
     // amount of fuel
     public static final double SHIP_MASS = 1000000;
     private boolean isEmptyFuelTank = false;
+    private boolean hasLanded = false;
     private ExecutorService executorService;
 
     public SpaceShip() {
@@ -66,6 +67,7 @@ public class SpaceShip extends Observable {
     }
 
     private void checkLimiters(Movement movement) {
+        if (movement.getResultsHandler()==null) return;
         heightStart = movement.getResultsHandler().getLastHeightValue();
         velocityStart = movement.getResultsHandler().getLastVelocityValue();
         massStart = movement.getResultsHandler().getLastMassValue();
@@ -89,6 +91,7 @@ public class SpaceShip extends Observable {
                         heightStart = item;
                         int index = movement.getResultsHandler().gethValues().indexOf(heightStart);
                         velocityStart = movement.getResultsHandler().getvValues().get(index);
+                        hasLanded = true;
                     }
                 }
             }
@@ -106,5 +109,10 @@ public class SpaceShip extends Observable {
 
     public double getMassStart() {
         return massStart;
+    }
+
+
+    public boolean isHasLanded() {
+        return hasLanded;
     }
 }
