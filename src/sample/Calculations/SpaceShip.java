@@ -33,6 +33,10 @@ public class SpaceShip extends Observable {
         notifyObservers();
     }
 
+    public double getCurrentFuelUsage() {
+        return currentFuelUsage;
+    }
+
     /**
      * Set current burning rate (fuel Usage)
      * @param currentFuelUsage if param is higher than 0
@@ -57,6 +61,11 @@ public class SpaceShip extends Observable {
         // SHOULD BE CHANGED AS FAST AS POSSIBLE. ONLY FOR TESTS.
         executorService.awaitTermination(100, TimeUnit.MILLISECONDS);
 
+        checkLimiters(movement);
+        parametersChanged();
+    }
+
+    private void checkLimiters(Movement movement) {
         heightStart = movement.getResultsHandler().getLastHeightValue();
         velocityStart = movement.getResultsHandler().getLastVelocityValue();
         massStart = movement.getResultsHandler().getLastMassValue();
@@ -85,7 +94,6 @@ public class SpaceShip extends Observable {
             }
             );
         }
-        parametersChanged();
     }
 
     public double getVelocityStart() {

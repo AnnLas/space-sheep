@@ -8,7 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-import sample.Calculations.DataPackage;
+import sample.Calculations.MovementDataPackage;
 import sample.Calculations.SpaceShip;
 import sample.simulation.SpaceShipUpdateService;
 
@@ -28,7 +28,8 @@ public class Controller implements Initializable {
 
     @FXML
     private Label dataLabel;
-
+    @FXML
+    private Label fuelUsageLabel;
 
     @FXML
     private Label velocityLabel;
@@ -45,8 +46,8 @@ public class Controller implements Initializable {
         spaceShipUpdateService.setOnSucceeded(event -> System.out.println("Updated"));
         spaceShipUpdateService.setOnFailed(event -> System.out.println("Failed"));
         spaceShipUpdateService.start();
-        DataPackage dataPackage = new DataPackage(dataLabel,velocityLabel,massLabel);
-        spaceShip.addObserver(dataPackage);
+        MovementDataPackage movementDataPackage = new MovementDataPackage(dataLabel,velocityLabel,massLabel,fuelUsageLabel);
+        spaceShip.addObserver(movementDataPackage);
     }
 
 

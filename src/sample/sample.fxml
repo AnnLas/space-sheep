@@ -15,6 +15,7 @@
                   <Label fx:id="dataLabel" text="Label" />
                   <Label fx:id="velocityLabel" alignment="CENTER" contentDisplay="CENTER" text="Label" />
                   <Label fx:id="massLabel" text="Label" />
+                  <Label fx:id="fuelUsageLabel" text="Label" />
                </children>
             </VBox>
          </children>
