@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class Movement implements Runnable{
 
     //time to integrate
-    private final double SIMULATION_TIME = 1;
+    private final double SIMULATION_TIME = 0.1;
     //step of integrate
     private double step = 0.01;
     //fuelUsage - parameter of burning rate
