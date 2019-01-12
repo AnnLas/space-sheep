@@ -1,5 +1,7 @@
 package sample.simulation;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import sample.Calculations.DataPackage;
@@ -22,6 +24,7 @@ public class SpaceShipUpdateService extends ScheduledService<DataPackage>{
         return new Task<DataPackage>() {
             @Override
             protected DataPackage call() throws Exception {
+                    if (spaceShip.getHeightStart()<0) SpaceShipUpdateService.this.cancel();
                     spaceShip.setCurrentFuelUsage(Controller.getFuelUsage());
                 return  null;
             }

@@ -1,6 +1,7 @@
 package sample.Calculations;
 
 
+import java.util.Comparator;
 import java.util.Observable;
 import java.util.concurrent.*;
 
@@ -16,7 +17,7 @@ public class SpaceShip extends Observable {
     // maximum speed of burning rate
     public static final double MAXIMUM_FUEL_USAGE = - 16500;
     // single change of fuel usage
-    public static final double CHANGE_OF_FUEL_UASGE = 500;
+    public static final double CHANGE_OF_FUEL_USAGE = 500;
     // amount of fuel
     public static final double SHIP_MASS = 1000000;
     private boolean isEmptyFuelTank = false;
@@ -59,9 +60,43 @@ public class SpaceShip extends Observable {
         heightStart = movement.getResultsHandler().getLastHeightValue();
         velocityStart = movement.getResultsHandler().getLastVelocityValue();
         massStart = movement.getResultsHandler().getLastMassValue();
-        if (massStart <= SHIP_MASS )  isEmptyFuelTank = true; //to be changed. Allows mass to be lower than ship mass
+        if (massStart <= SHIP_MASS ){
+            isEmptyFuelTank = true;
+            movement.getResultsHandler().getmValues().forEach(item->{
+                if (item >= SHIP_MASS-CHANGE_OF_FUEL_USAGE&& item <= SHIP_MASS+CHANGE_OF_FUEL_USAGE){
+                    if (Math.abs(item-SHIP_MASS)<Math.abs(massStart-SHIP_MASS)) {
+                        massStart = item;
+                        int index = movement.getResultsHandler().getmValues().indexOf(massStart);
+                        velocityStart = movement.getResultsHandler().getvValues().get(index);
+                        heightStart = movement.getResultsHandler().gethValues().get(index);
+                    }
+                }
+            });
+        }
+        if (heightStart<0) {
+            movement.getResultsHandler().gethValues().forEach(item -> {
+                if (item>=0-50 && item <= 0+50){
+                    if (Math.abs(item-50)<Math.abs(heightStart-50)) {
+                        heightStart = item;
+                        int index = movement.getResultsHandler().gethValues().indexOf(heightStart);
+                        velocityStart = movement.getResultsHandler().getvValues().get(index);
+                    }
+                }
+            }
+            );
+        }
         parametersChanged();
     }
 
+    public double getVelocityStart() {
+        return velocityStart;
+    }
 
+    public double getHeightStart() {
+        return heightStart;
+    }
+
+    public double getMassStart() {
+        return massStart;
+    }
 }
