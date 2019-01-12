@@ -33,12 +33,20 @@ public class Sprite {
         velocityY += y;
     }
 
+    public double getPositionY() {
+        return positionY;
+    }
 
     public void setImage(String imagePath) {
         Image image = new Image(imagePath);
         setImage(image);
 
     }
+
+    public Image getImage() {
+        return image;
+    }
+
     public void setPosition(double x, double y){
         setPositionX(x);
         setPositionY(y);

@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -41,6 +42,7 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         spaceShip = new SpaceShip();
         changeSpeedInit();
+        graphicsInit();
         SpaceShipUpdateService spaceShipUpdateService = new SpaceShipUpdateService(spaceShip);
         spaceShipUpdateService.setPeriod(Duration.seconds(0.1));
         spaceShipUpdateService.setOnSucceeded(event -> System.out.println("Updated"));
@@ -101,11 +103,43 @@ public class Controller implements Initializable {
 
     private void graphicsInit(){
 
-        Canvas canvas = new Canvas( 1000, 1000);
+        Canvas canvas = new Canvas( 1000, 500);
         game_pane.getChildren().add(canvas);
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.drawImage(new Image("sample/images/background.jpg"),0,0);
-        gc.stroke();
+
+        Sprite background = new Sprite(0,0,0,0);
+        Image image = new Image("sample/images/background.png");
+        background.setImage(image);
+        Sprite followingBackground = new Sprite(0,image.getHeight(),0,0);
+        followingBackground.setImage(image);
+        final long startNanoTime = System.nanoTime();
+
+        new AnimationTimer()
+        {
+            public void handle(long currentNanoTime)
+            {
+                double t = (currentNanoTime - startNanoTime) / 1000000000.0;
+                if (spaceShip.isHasLanded()) this.stop();
+                System.out.println(background.getPositionY());
+                if (background.getPositionY()<-image.getHeight()){
+                    background.setPositionY(image.getHeight());
+                }
+                else if (background.getPositionY()>image.getHeight())
+                    background.setPositionY(-image.getHeight());
+                else if (followingBackground.getPositionY()<-image.getHeight()){
+                    followingBackground.setPositionY(image.getHeight());
+                }
+                else if (followingBackground.getPositionY()>image.getHeight())
+                    followingBackground.setPositionY(-image.getHeight());
+                // background image clears canvas
+                background.setVelocity(0,spaceShip.getVelocityStart()/150);
+                background.update(t);
+                background.render(gc);
+                followingBackground.setVelocity(0,spaceShip.getVelocityStart()/150);
+                followingBackground.update(t);
+                followingBackground.render(gc);
+            }
+        }.start();
 
     }
 
