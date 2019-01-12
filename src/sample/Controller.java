@@ -18,8 +18,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
-    private boolean increaseSpeed;
-    private boolean decreaseSpeed;
     private SpaceShip spaceShip;
     // Usage of fuel per one second. Fuel usage can't be positive number.
     private static double fuelUsage;
@@ -68,14 +66,12 @@ public class Controller implements Initializable {
             game_pane.getScene().setOnKeyPressed(keyEvent -> {
                 switch (keyEvent.getCode()) {
                     case UP: {
-                        increaseSpeed = true;
                         if (fuelUsage>SpaceShip.MAXIMUM_FUEL_USAGE) //maximum burnout rate
                         fuelUsage-=SpaceShip.CHANGE_OF_FUEL_USAGE; //grams
                             System.out.println(fuelUsage);
                         break;
                     }
                     case DOWN:
-                        decreaseSpeed = true;
                         if (fuelUsage!=0) //fuel usage can't be positive
                         fuelUsage+= SpaceShip.CHANGE_OF_FUEL_USAGE; //grams
                             System.out.println(fuelUsage);
@@ -84,17 +80,6 @@ public class Controller implements Initializable {
 
             });
 
-            game_pane.getScene().setOnKeyReleased(keyEvent -> {
-                switch (keyEvent.getCode()) {
-                    case UP:
-                        increaseSpeed = false;
-                        break;
-                    case DOWN:
-                        decreaseSpeed = false;
-                        break;
-                }
-
-            });
 
         });
 
@@ -107,10 +92,10 @@ public class Controller implements Initializable {
         game_pane.getChildren().add(canvas);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        Sprite background = new Sprite(0,0,0,0);
+        Sprite background = new BackgroundSprite(0,0,0,0);
         Image image = new Image("sample/images/background.png");
         background.setImage(image);
-        Sprite followingBackground = new Sprite(0,image.getHeight(),0,0);
+        Sprite followingBackground = new BackgroundSprite(0,image.getHeight(),0,0);
         followingBackground.setImage(image);
         final long startNanoTime = System.nanoTime();
 
@@ -121,21 +106,11 @@ public class Controller implements Initializable {
                 double t = (currentNanoTime - startNanoTime) / 1000000000.0;
                 if (spaceShip.isHasLanded()) this.stop();
                 System.out.println(background.getPositionY());
-                if (background.getPositionY()<-image.getHeight()){
-                    background.setPositionY(image.getHeight());
-                }
-                else if (background.getPositionY()>image.getHeight())
-                    background.setPositionY(-image.getHeight());
-                else if (followingBackground.getPositionY()<-image.getHeight()){
-                    followingBackground.setPositionY(image.getHeight());
-                }
-                else if (followingBackground.getPositionY()>image.getHeight())
-                    followingBackground.setPositionY(-image.getHeight());
                 // background image clears canvas
-                background.setVelocity(0,spaceShip.getVelocityStart()/150);
+                background.setVelocity(0,spaceShip.getVelocityStart()/1500);
                 background.update(t);
                 background.render(gc);
-                followingBackground.setVelocity(0,spaceShip.getVelocityStart()/150);
+                followingBackground.setVelocity(0,spaceShip.getVelocityStart()/1500);
                 followingBackground.update(t);
                 followingBackground.render(gc);
             }
