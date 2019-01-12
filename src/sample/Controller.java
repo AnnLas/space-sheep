@@ -21,6 +21,8 @@ public class Controller implements Initializable {
     private SpaceShip spaceShip;
     // Usage of fuel per one second. Fuel usage can't be positive number.
     private static double fuelUsage;
+    //scaler for animations
+    private static final double VELOCITY_SCALER = 1500;
 
     @FXML
     private Pane game_pane;
@@ -107,10 +109,10 @@ public class Controller implements Initializable {
                 if (spaceShip.isHasLanded()) this.stop();
                 System.out.println(background.getPositionY());
                 // background image clears canvas
-                background.setVelocity(0,spaceShip.getVelocityStart()/1500);
+                background.setVelocity(0,spaceShip.getVelocityStart()/VELOCITY_SCALER);
                 background.update(t);
                 background.render(gc);
-                followingBackground.setVelocity(0,spaceShip.getVelocityStart()/1500);
+                followingBackground.setVelocity(0,spaceShip.getVelocityStart()/VELOCITY_SCALER);
                 followingBackground.update(t);
                 followingBackground.render(gc);
             }
