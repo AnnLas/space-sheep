@@ -63,7 +63,9 @@ public class SpaceShip extends Observable {
         executorService.awaitTermination(100, TimeUnit.MILLISECONDS);
 
         checkLimiters(movement);
-        parametersChanged();
+
+        setChanged();
+        notifyObservers(this);
     }
 
     private void checkLimiters(Movement movement) {
@@ -99,15 +101,15 @@ public class SpaceShip extends Observable {
         }
     }
 
-    public double getVelocityStart() {
+    public double getCurrentVelocity() {
         return velocityStart;
     }
 
-    public double getHeightStart() {
+    public double getCurrentHeight() {
         return heightStart;
     }
 
-    public double getMassStart() {
+    public double getCurrentMass() {
         return massStart;
     }
 

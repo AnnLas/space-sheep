@@ -3,7 +3,6 @@ package sample.Calculations;
 import org.apache.commons.math3.exception.MaxCountExceededException;
 import org.apache.commons.math3.ode.sampling.StepHandler;
 import org.apache.commons.math3.ode.sampling.StepInterpolator;
-import sun.plugin2.main.server.ResultHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;

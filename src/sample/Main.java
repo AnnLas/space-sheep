@@ -5,17 +5,16 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("game_stage.fxml"));
         primaryStage.setTitle("Landing simulator");
-        primaryStage.setScene(new Scene(root, 800, 400));
+        primaryStage.setResizable(false);
+        primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> {
             Platform.exit();
