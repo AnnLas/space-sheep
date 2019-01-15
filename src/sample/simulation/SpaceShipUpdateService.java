@@ -22,7 +22,7 @@ public class SpaceShipUpdateService extends ScheduledService<MovementDataPackage
         return new Task<MovementDataPackage>() {
             @Override
             protected MovementDataPackage call() throws Exception {
-                    if (spaceShip.getHeightStart()<0) SpaceShipUpdateService.this.cancel();
+                    if (spaceShip.getCurrentHeight()<0) SpaceShipUpdateService.this.cancel();
                     spaceShip.setCurrentFuelUsage(Controller.getFuelUsage());
                 return  null;
             }

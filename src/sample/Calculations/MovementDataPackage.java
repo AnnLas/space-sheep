@@ -3,7 +3,6 @@ package sample.Calculations;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -32,10 +31,10 @@ public class MovementDataPackage implements Observer {
     public void update(Observable o, Object arg) {
         SpaceShip spaceShip = (SpaceShip) o;
         Platform.runLater(()->{
-            heightLabel.setText(HEIGHT_DATA + String.valueOf(spaceShip.getHeightStart()));
-            velocityLabel.setText(VELOCITY_DATA + String.valueOf(spaceShip.getVelocityStart()));
-            massLabel.setText(MASS_DATA + String.valueOf(spaceShip.getMassStart()));
-            fuelUsageLabel.setText( FUEL_USAGE_DATA + String.valueOf(spaceShip.getCurrentFuelUsage()));
+            heightLabel.setText(HEIGHT_DATA + spaceShip.getCurrentHeight()+"m");
+            velocityLabel.setText(VELOCITY_DATA + spaceShip.getCurrentVelocity()+ "m/s");
+            massLabel.setText(MASS_DATA + spaceShip.getCurrentMass() + "g");
+            fuelUsageLabel.setText( FUEL_USAGE_DATA + (spaceShip.getCurrentFuelUsage() + "g/s"));
         });
     }
 }

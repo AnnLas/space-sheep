@@ -1,0 +1,12 @@
+.parent{
+    -fx-background-color: #eeeeee;
+
+
+}
+.grid{
+
+}
+.axis-label {
+    -fx-text-fill: #4682b4;
+}
+
