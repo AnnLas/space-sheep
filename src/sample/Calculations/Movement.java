@@ -2,6 +2,7 @@ package sample.Calculations;
 
 import org.apache.commons.math3.ode.FirstOrderDifferentialEquations;
 import org.apache.commons.math3.ode.FirstOrderIntegrator;
+import org.apache.commons.math3.ode.nonstiff.ClassicalRungeKuttaIntegrator;
 import org.apache.commons.math3.ode.nonstiff.EulerIntegrator;
 
 import java.util.Arrays;
@@ -45,7 +46,7 @@ public class Movement implements Runnable{
     @Override
     public void run() {
         FirstOrderDifferentialEquations firstOrderDifferentialEquations = new MovementODE(fuelUsage);
-        FirstOrderIntegrator integrator = new EulerIntegrator(step);
+        FirstOrderIntegrator integrator = new ClassicalRungeKuttaIntegrator(step);
         resultsHandler = new ResultsHandler();
         integrator.addStepHandler(resultsHandler);
         integrator.integrate(firstOrderDifferentialEquations, 0, xStart, SIMULATION_TIME, xStop);

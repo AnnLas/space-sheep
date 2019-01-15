@@ -11,6 +11,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import sample.Calculations.MovementDataPackage;
 import sample.Calculations.SpaceShip;
@@ -117,27 +118,30 @@ public class Controller implements Initializable, Observer {
         final int height =468;
         final int width =615;
 
+
         Canvas canvas = new Canvas(width, height);
-        Canvas sideViewCanva = new Canvas(width,200);
+        Canvas sideViewCanva = new Canvas(width,333);
         game_pane.getChildren().add(canvas);
         side_view_pane.getChildren().add(sideViewCanva);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         GraphicsContext sideViewGC = sideViewCanva.getGraphicsContext2D();
 
         Sprite background = new BackgroundSprite(0,0,0,0);
-        Sprite background2 = new BackgroundSprite(0,0,0,0);
 
-        Sprite ship = new Sprite(width/4,height/4,0,0);
-        Sprite rocket = new Sprite(width/4,height/4,0,0);
+
+        Sprite ship = new Sprite(width/4,4,0,0);
+        Image rocket = new Image("sample/images/small_rocket.png");
 
         Image image = new Image("sample/images/background.png");
-        Image image2 = new Image("sample/images/background2.jpg");
         background.setImage(image);
-        background2.setImage(image2);
 
-        ship.setImage(new Image("sample/images/gaben1.png"));
+
+        ship.setImage(new Image("sample/images/rocket0.png"));
 
         Sprite followingBackground = new BackgroundSprite(0,image.getHeight(),0,0);
+
+
+
 
         followingBackground.setImage(image);
         final long startNanoTime = System.nanoTime();
@@ -150,24 +154,52 @@ public class Controller implements Initializable, Observer {
                 if (spaceShip.isHasLanded()) this.stop();
                 System.out.println(background.getPositionY());
                 // background image clears canvas
-                if (spaceShip.getCurrentFuelUsage()<0&&spaceShip.getCurrentMass()>1000020){
-                    ship.setImage(new Image("sample/images/gaben2.png"));
+                if (spaceShip.getCurrentMass()>1000500&&spaceShip.getCurrentHeight()>0.5){
+
+                        if (0==spaceShip.getCurrentFuelUsage()) {
+                            ship.setImage(new Image("sample/images/rocket0.png"));
+                        }
+                        else if (-32*SpaceShip.CHANGE_OF_FUEL_USAGE>=spaceShip.getCurrentFuelUsage()) {
+                            ship.setImage(new Image("sample/images/rocket1000.png"));
+                        }
+                        else if (-28*SpaceShip.CHANGE_OF_FUEL_USAGE>=spaceShip.getCurrentFuelUsage()) {
+                            ship.setImage(new Image("sample/images/rocket875.png"));
+                        }
+                        else if (-24*SpaceShip.CHANGE_OF_FUEL_USAGE>=spaceShip.getCurrentFuelUsage()) {
+                            ship.setImage(new Image("sample/images/rocket750.png"));
+                        }
+                        else if (-20*SpaceShip.CHANGE_OF_FUEL_USAGE>=spaceShip.getCurrentFuelUsage()) {
+                            ship.setImage(new Image("sample/images/rocket625.png"));
+                        }
+                        else if (-16*SpaceShip.CHANGE_OF_FUEL_USAGE>=spaceShip.getCurrentFuelUsage()) {
+                            ship.setImage(new Image("sample/images/rocket500.png"));
+                        }
+                        else if (-12*SpaceShip.CHANGE_OF_FUEL_USAGE>=spaceShip.getCurrentFuelUsage()) {
+                            ship.setImage(new Image("sample/images/rocket375.png"));
+                        }
+                        else if (-8*SpaceShip.CHANGE_OF_FUEL_USAGE>=spaceShip.getCurrentFuelUsage()) {
+                            ship.setImage(new Image("sample/images/rocket250.png"));
+                        }
+                        else if (-4*SpaceShip.CHANGE_OF_FUEL_USAGE>=spaceShip.getCurrentFuelUsage()) {
+                            ship.setImage(new Image("sample/images/rocket125.png"));
+                        }
+
+
                 }
-                else if (spaceShip.getCurrentMass()<1000020){
-                    ship.setImage(new Image("sample/images/gaben3.png"));
-                }
+
                 else {
-                    ship.setImage(new Image("sample/images/gaben1.png"));
+                    ship.setImage(new Image("sample/images/rocket0.png"));
+
                 }
 
 
                 background.setVelocity(0,spaceShip.getCurrentVelocity()/VELOCITY_SCALER);
                 background.update(t);
                 background.render(gc);
-                background2.render(sideViewGC);
+                sideViewGC.drawImage(rocket,width/2,(SpaceShip.INITIAL_HEIGHT -spaceShip.getCurrentHeight()+20000)/1000);
+                sideViewGC.strokeLine(   25,60,225,60);
                 ship.render(gc);
-                rocket.setPositionY(spaceShip.getCurrentHeight()/1000);
-                rocket.render(sideViewGC);
+
                 followingBackground.setVelocity(0,spaceShip.getCurrentVelocity()/VELOCITY_SCALER);
                 followingBackground.update(t);
                 followingBackground.render(gc);
@@ -188,7 +220,7 @@ public class Controller implements Initializable, Observer {
 
     private void updateData(SpaceShip spaceShip) {
        movementSeries.getData().add(new XYChart.Data<>(spaceShip.getCurrentVelocity(), spaceShip.getCurrentHeight()));
-       if (spaceShip.getCurrentMass()<1000020.5){
+       if (spaceShip.getCurrentMass()<1000500){
            fuelUsageLabel.setText("Out of fuel");
            massLabel.setText(String.valueOf(1000000));
 

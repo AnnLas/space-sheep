@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.ScatterChart?>
@@ -23,12 +24,16 @@
    </rowConstraints>
    <children>
       <Pane fx:id="game_pane" prefHeight="341.0" prefWidth="534.0" GridPane.rowIndex="1" />
-      <ScatterChart fx:id="movement_chart" disable="true" legendVisible="false" style="-fx-background-color: #FFFF;" GridPane.columnIndex="1">
+      <ScatterChart fx:id="movement_chart" disable="true" legendVisible="false" style="-fx-background-color: #000000;" GridPane.columnIndex="1">
         <xAxis>
-           <NumberAxis label="v" side="BOTTOM" />
+           <NumberAxis animated="false" label="v" side="BOTTOM" upperBound="4000.0" />
         </xAxis>
         <yAxis>
-          <NumberAxis label="h" side="LEFT" />
+          <NumberAxis animated="false" label="h" side="LEFT" upperBound="4500.0">
+               <styleClass>
+                  <String fx:value="axis-label" />
+                  <String fx:value="axis-label" />
+               </styleClass></NumberAxis>
         </yAxis>
       </ScatterChart>
       <VBox prefHeight="206.0" prefWidth="174.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
