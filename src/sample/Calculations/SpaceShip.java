@@ -4,8 +4,12 @@ package sample.Calculations;
 import java.util.Observable;
 import java.util.concurrent.*;
 
+/**
+ * Describes spaceship state (mass, velocity, height and fuel usage
+ */
 public class SpaceShip extends Observable {
 
+    //currentVelocity - curent velocity of the spaceship [m/s]
     private double currentVelocity = -150;
     //currentHeight - curent height of the spaceship [m]
     private double currentHeight = 50000;
@@ -17,30 +21,31 @@ public class SpaceShip extends Observable {
     public static final double MAXIMUM_FUEL_USAGE = -16500;
     // single change of fuel usage
     public static final double CHANGE_OF_FUEL_USAGE = 500;
-    // amount of fuel
+    // amount of fuel [g]
     public static final double SHIP_MASS = 1000000;
 
     private boolean isEmptyFuelTank = false;
     private boolean hasLanded = false;
     private ExecutorService executorService;
 
+    /**
+     * Creates SpaceShip instance
+     */
     public SpaceShip() {
         executorService = Executors.newSingleThreadExecutor();
         setCurrentFuelUsage(currentFuelUsage);
     }
 
-    private void parametersChanged() {
-        setChanged();
-        notifyObservers();
-    }
-
+    /**
+     * Returns current burning rate (fuel Usage)
+     * @return current fuel usage
+     */
     public double getCurrentFuelUsage() {
         return currentFuelUsage;
     }
 
     /**
      * Set current burning rate (fuel Usage)
-     *
      * @param currentFuelUsage if param is higher than 0
      */
     public void setCurrentFuelUsage(double currentFuelUsage) {
@@ -102,19 +107,34 @@ public class SpaceShip extends Observable {
         }
     }
 
+    /**
+     * Returns current velocity of the spaceship [m/s]
+     * @return current velocity
+     */
     public double getCurrentVelocity() {
         return currentVelocity;
     }
 
+    /**
+     * Returns current height at which the ship is located
+     * @return current height
+     */
     public double getCurrentHeight() {
         return currentHeight;
     }
 
+    /**
+     * Returns current mass of the spaceship [m/s]
+     * @return current spaceship's mass
+     */
     public double getCurrentMass() {
         return currentMass;
     }
 
-
+    /**
+     * Returns information if spaceship has landed
+     * @return true if spaceship has landed
+     */
     public boolean isHasLanded() {
         return hasLanded;
     }

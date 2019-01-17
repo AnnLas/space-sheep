@@ -7,8 +7,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Initialize the application
+ */
 public class Main extends Application {
-
+    /**
+     * Shows main stage of the game
+     * @param primaryStage main stage of the game
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("game_stage.fxml"));

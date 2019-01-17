@@ -15,15 +15,31 @@ public class MovementODE implements FirstOrderDifferentialEquations {
     private final double fuelUsage;
 
 
+    /**
+     * Returns dimension of the problem
+     * @return problem dimension
+     */
     @Override
     public int getDimension() {
         return 3;
     }
 
+    /**
+     * Creates instance of MovementODE
+     * @param fuelUsage - current usage of fuel
+     */
     public MovementODE(double fuelUsage) {
         this.fuelUsage = fuelUsage;
     }
 
+    /**
+     * Calculates derrivatives
+     * @param t current value of the independent time variable
+     * @param x  current values of the spaceship state vector
+     * @param dxdt placeholder array where to put the time derivative of the state vector
+     * @throws MaxCountExceededException
+     * @throws DimensionMismatchException
+     */
     @Override
     public void computeDerivatives(double t, double[] x, double[] dxdt) throws MaxCountExceededException, DimensionMismatchException {
         //dxdt[0] - velocity of the ship at the moment of time
