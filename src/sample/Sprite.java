@@ -1,20 +1,26 @@
 package sample;
 
-import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-
+/**
+ * Represents graphical objects on the scene
+ */
 public class Sprite {
     private Image image;
     private double positionX;
     private double positionY;
     private double velocityX;
     private double velocityY;
-    private double width;
-    private double height;
 
-
+    /**
+     * Initialize sprite
+     *
+     * @param positionX sprite x position
+     * @param positionY sprite y position
+     * @param velocityX sprite x velocity
+     * @param velocityY sprite y velocity
+     */
     public Sprite(double positionX, double positionY, double velocityX, double velocityY) {
         this.positionX = positionX;
         this.positionY = positionY;
@@ -22,75 +28,90 @@ public class Sprite {
         this.velocityY = velocityY;
     }
 
+    /**
+     * Sets sprite image
+     *
+     * @param image image of the Sprite
+     */
     public void setImage(Image image) {
         this.image = image;
-        this.width = image.getWidth();
-        this.height = image.getHeight();
-    }
-    public void addVelocity(double x, double y)
-    {
-        velocityX += x;
-        velocityY += y;
+
     }
 
+    /**
+     * Returns sprite y coordinate
+     *
+     * @return y coordinate
+     */
     public double getPositionY() {
         return positionY;
     }
 
-    public void setImage(String imagePath) {
-        Image image = new Image(imagePath);
-        setImage(image);
-
-    }
-
+    /**
+     * Returns image which represents sprite
+     *
+     * @return image
+     */
     public Image getImage() {
         return image;
     }
 
-    public void setPosition(double x, double y){
-        setPositionX(x);
-        setPositionY(y);
-    }
-    public void setPositionX(double positionX) {
-        this.positionX = positionX;
-    }
-
+    /**
+     * Sets sprite y coordinate
+     *
+     * @param positionY y coordinate of the sprite
+     */
     public void setPositionY(double positionY) {
         this.positionY = positionY;
     }
 
-    public void setVelocity(double xV, double yV){
+    /**
+     * Sets velocity of the sprite
+     *
+     * @param xV x direction velocity
+     * @param yV y direction velocity
+     */
+    public void setVelocity(double xV, double yV) {
         setVelocityX(xV);
         setVelocityY(yV);
     }
 
-
+    /**
+     * Sets velocity in the x direction
+     *
+     * @param velocityX velocity in the x direction
+     */
     public void setVelocityX(double velocityX) {
         this.velocityX = velocityX;
     }
 
+    /**
+     * Sets velocity in the y direction
+     *
+     * @param velocityY velocity in the y direction
+     */
     public void setVelocityY(double velocityY) {
         this.velocityY = velocityY;
     }
 
-    public void update(double time){
-        positionX +=velocityX*time;
-        positionY +=velocityY*time;
-    }
-    public void render(GraphicsContext graphicsContext){
-        graphicsContext.drawImage(image,positionX,positionY);
-    }
-
-    public Rectangle2D getBoundary()
-    {
-        return new Rectangle2D(positionX,positionY,width,height);
+    /**
+     * Updates sprite position
+     *
+     * @param time time of the displacement
+     */
+    public void update(double time) {
+        positionX += velocityX * time;
+        positionY += velocityY * time;
     }
 
-    public boolean intersects(Sprite s)
-    {
-        return s.getBoundary().intersects( this.getBoundary() );
+    /**
+     * Renders image on the screen
+     *
+     * @param graphicsContext context which is responsible for graphic rendering
+     */
+    public void render(GraphicsContext graphicsContext) {
+        graphicsContext.drawImage(image, positionX, positionY);
     }
-
 
 
 }

@@ -10,7 +10,7 @@ import java.util.Arrays;
 /**
  * Thread that calculates movement of a SpaceSheep Sprite in next second.
  */
-public class Movement implements Runnable{
+public class Movement implements Runnable {
 
     //time to integrate
     private final double SIMULATION_TIME = 0.1;
@@ -24,6 +24,11 @@ public class Movement implements Runnable{
     private double[] xStop;
 
 
+    /**
+     * Inits movement of the spaceship
+     *
+     * @param xStart
+     */
     public Movement(double[] xStart) {
         this.xStart = xStart.clone();
         this.xStop = xStart.clone();

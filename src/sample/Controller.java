@@ -22,6 +22,9 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
 
+/**
+ * Manages main view of the game
+ */
 public class Controller implements Initializable, Observer {
     private SpaceShip spaceShip;
     // Usage of fuel per one second. Fuel usage can't be positive number.
@@ -50,6 +53,11 @@ public class Controller implements Initializable, Observer {
     @FXML
     private Label massLabel;
 
+    /**
+     * Initialization of the main controller
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         spaceShip = new SpaceShip();
